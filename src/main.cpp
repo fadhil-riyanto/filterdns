@@ -16,6 +16,12 @@ struct server_properties
 
 int _main(struct server_properties *server_properties)
 {
+    struct sock_instance *sock_instance;
+    sock_init(sock_instance);
+    sock_bind(sock_instance, server_properties->port, server_properties->addr);
+    sock_listen(sock_instance);
+    do_cleanup(sock_instance->sockfd);
+
     fprintf(stdout, "starting program %s:%d", server_properties->addr, server_properties->port);
     return 0;
 }

@@ -16,9 +16,13 @@ struct sock_instance
     struct epoll_event event, events[EPOLL_MAX_EVENTS];
 };
 
+
 int sock_init(struct sock_instance *sock_instance);
 int sock_bind(struct sock_instance *sock_instance, int port, char *addr);
 int sock_listen(struct sock_instance *sock_instance);
-void do_sockfd_cleanup(int sockfd);
+int do_cleanup(int sockfd);
+
+int epoll_init(struct sock_instance *sock_instance);
+int epoll_setprop(struct sock_instance *sock_instance, EPOLL_EVENTS event_type, int operation);
 
 #endif
