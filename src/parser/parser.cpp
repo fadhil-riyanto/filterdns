@@ -1,6 +1,5 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
-#include <cstddef>
 #endif
 
 #include <cstdio>
@@ -18,6 +17,7 @@ int parser_get(struct parser_target *parser_target, char **buf, char *prop)
     *buf = NULL;
     char *tempval;
 
+    parser_target->lastcall = prop;
     for(int x = 0; x < parser_target->argc; x++) {
         //printf("lit %d\n", x);
         
@@ -46,4 +46,9 @@ int parser_get(struct parser_target *parser_target, char **buf, char *prop)
     }
     *buf = NULL;
     return PARSE_INCOMPELETE_ARGS;
+}
+
+char *parser_err_where(struct parser_target *parser_target)
+{
+    return parser_target->lastcall;
 }
