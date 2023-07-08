@@ -10,10 +10,11 @@
 #include <netinet/in.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <cstring>
 
 int sock_init(struct sock_instance *sock_instance)
 {
-    sock_instance->sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    sock_instance->sockfd = socket(AF_INET, SOCK_DGRAM, 0);
     if (sock_instance->sockfd == -1)
         perror("socket");
     
@@ -39,21 +40,39 @@ int sock_bind(struct sock_instance *sock_instance, int port, char *addr)
 
 int sock_listen(struct sock_instance *sock_instance)
 {
-    int ret, clientfd;
+    int ret, clientfd, recvbytes;
     struct sockaddr_in clientAddress;
+    char buf[DNS_BUF];
 
-    if ((ret = listen(sock_instance->sockfd, CONN_MAX_CLIENTS))) {
-        perror("listen");
-        do_cleanup(sock_instance->sockfd);
-    }
-    while (1)
-    {
-        socklen_t clientAddressLength = sizeof(clientAddress);
-        clientfd = accept(sock_instance->sockfd, (struct sockaddr*)&clientAddress, &clientAddressLength);
+    socklen_t socklen = sizeof (clientAddress);
 
-        char aaaa[8] = "fadhil\0";
-        write(clientfd, aaaa, sizeof(aaaa));
+    for(;;) {
+        //buf = NULL;
+        
+        recvbytes = recvfrom(sock_instance->sockfd, &buf, sizeof(buf), 0, 
+                (struct sockaddr*)&clientAddress, &socklen);
+        buf[recvbytes] = '\0';
+        printf("%s", buf);
+        // memset(buf, 0, DNS_BUF);
+        // char aaaa[8] = "fadhil\0";
+        
+        // sendto(sock_instance->sockfd, &aaaa, sizeof(aaaa), 0, (struct sockaddr*)&clientAddress, socklen);
     }
+// 123456789
+
+
+    // if ((ret = listen(sock_instance->sockfd, CONN_MAX_CLIENTS))) {
+    //     perror("listen");
+    //     do_cleanup(sock_instance->sockfd);
+    // }
+    // while (1)
+    // {
+    //     socklen_t clientAddressLength = sizeof(clientAddress);
+    //     clientfd = accept(sock_instance->sockfd, (struct sockaddr*)&clientAddress, &clientAddressLength);
+
+    //     char aaaa[8] = "fadhil\0";
+    //     sendto(clientfd, aaaa, sizeof(aaaa), 0, (struct sockaddr*)&clientAddress, sizeof(clientAddress));
+    // }
     return ret;
 }
 
