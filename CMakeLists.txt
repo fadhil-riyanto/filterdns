@@ -6,6 +6,7 @@ set(CMAKE_BUILD_TYPE, Debug)
 
 SET(libutils_src
     src/utils/parser.cpp
+    src/utils/debugger.cpp
 )
 ADD_LIBRARY(libutils STATIC "${libutils_src}")
 
