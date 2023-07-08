@@ -16,6 +16,7 @@ struct sock_instance
     struct epoll_event event, events[EPOLL_MAX_EVENTS];
 };
 
+static const int DNS_BUF = 1024;
 
 int sock_init(struct sock_instance *sock_instance);
 int sock_bind(struct sock_instance *sock_instance, int port, char *addr);
