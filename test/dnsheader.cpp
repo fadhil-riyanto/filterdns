@@ -39,11 +39,14 @@ int main()
 
     dns = (struct dns_header*)&buf;
     dns->id = 69;
-    dns->rd = 0b1;
-    dns->tc = 0b0;
-    dns->aa = 0b0;
-    dns->opcode = 0b0;
+    
     dns->qr = 0b0;
+    dns->opcode = 0b0;
+    dns->tc = 0b0;
+    dns->rd = 0b1;
+    dns->ra = 0b0;
+    dns->zero = 0b0;
+    dns->rcode = 0b0;
 
     printf("%s\n", buf);
     printf("strlen after: %lu\n", strlen((const char *)buf));
