@@ -8,15 +8,14 @@ SET(libutils_src
     src/utils/parser.cpp
     src/utils/debugger.cpp
 )
-ADD_LIBRARY(libutils STATIC "${libutils_src}")
 
 SET(libserver_src
     src/server/server.cpp
 )
-ADD_LIBRARY(libserver STATIC "${libserver_src}")
+
+ADD_LIBRARY(liball STATIC "${libserver_src}" "${libutils_src}")
 
 set(CMAKE_BUILD_TYPE, Debug)
 add_executable(executable src/main.cpp)
-target_link_libraries(executable libutils)
-target_link_libraries(executable libserver)
+target_link_libraries(executable liball)
 set_target_properties(executable PROPERTIES OUTPUT_NAME "filterdns")
